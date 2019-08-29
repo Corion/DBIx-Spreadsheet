@@ -14,6 +14,19 @@ use feature 'signatures';
 
 our $VERSION = '0.01';
 
+=head1 SYNOPSIS
+
+  my $sheet = DBIx::Spreadsheet->new( file => 'workbook.xlsx' );
+  my $dbh = $sheet->dbh;
+
+  my @rows = $dbh->selectall_arrayref(<<'SQL');
+      select *
+        from sheet_1
+       where foo = 'bar'
+  SQL
+
+=cut
+
 has 'file' => (
     is => 'ro',
 );
