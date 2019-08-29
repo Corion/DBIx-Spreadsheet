@@ -1,0 +1,5 @@
+
+[![Travis Build Status](https://travis-ci.org/Corion/DBIx-Spreadsheet.svg?branch=master)](https://travis-ci.org/Corion/DBIx-Spreadsheet)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/Corion/DBIx-Spreadsheet?branch=master&svg=true)](https://ci.appveyor.com/project/Corion/DBIx-Spreadsheet)
+
+
