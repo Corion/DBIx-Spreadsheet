@@ -4,6 +4,8 @@ use Getopt::Long;
 use DBIx::Spreadsheet;
 use DBIx::RunSQL;
 
+our $VERSION = '0.01';
+
 # use File::Notify::Simple;
 GetOptions();
 
