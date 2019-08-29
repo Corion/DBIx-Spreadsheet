@@ -48,6 +48,7 @@ my %module = (
 
     PREREQ_PM => {
         'Getopt::Long'       => '0',
+        'Moo'                => '2',
         'Filter::signatures' => '0.09',
         'Spreadsheet::Read'  => '0',
         'DBIx::RunSQL'       => '0',
