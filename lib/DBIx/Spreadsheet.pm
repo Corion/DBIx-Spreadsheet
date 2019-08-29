@@ -14,6 +14,10 @@ use feature 'signatures';
 
 our $VERSION = '0.01';
 
+=head1 NAME
+
+DBIx::Spreadsheet - Query a spreadsheet with SQL
+
 =head1 SYNOPSIS
 
   my $sheet = DBIx::Spreadsheet->new( file => 'workbook.xlsx' );
