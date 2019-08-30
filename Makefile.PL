@@ -50,7 +50,7 @@ my %module = (
         'Getopt::Long'       => '0',
         'Moo'                => '2',
         'Filter::signatures' => '0.09',
-        'Spreadsheet::Read'  => '0',
+        'Spreadsheet::Read'  => '0.69', # fixes for OO support
         'DBIx::RunSQL'       => '0',
         'Text::Unidecode'    => '0',
     },
