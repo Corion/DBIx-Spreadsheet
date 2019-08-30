@@ -2,4 +2,17 @@
 [![Travis Build Status](https://travis-ci.org/Corion/DBIx-Spreadsheet.svg?branch=master)](https://travis-ci.org/Corion/DBIx-Spreadsheet)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/Corion/DBIx-Spreadsheet?branch=master&svg=true)](https://ci.appveyor.com/project/Corion/DBIx-Spreadsheet)
 
+# NAME
 
+DBIx::Spreadsheet - Query a spreadsheet with SQL
+
+# SYNOPSIS
+
+    my $sheet = DBIx::Spreadsheet->new( file => 'workbook.xlsx' );
+    my $dbh = $sheet->dbh;
+
+    my @rows = $dbh->selectall_arrayref(<<'SQL');
+        select *
+          from sheet_1
+         where foo = 'bar'
+    SQL
