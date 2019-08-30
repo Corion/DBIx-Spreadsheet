@@ -87,7 +87,7 @@ sub import_data( $self, $book ) {
 
         # Fix up duplicate columns, empty column names
 
-        $colnames = join ",", gen_colnames( @$colnames );
+        $colnames = join ",", $self->gen_colnames( @$colnames );
         {;
             #no strict 'refs';
             # Later, find the first non-empty row, instead of blindly taking the first row
