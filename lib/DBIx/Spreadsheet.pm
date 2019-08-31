@@ -82,7 +82,12 @@ sub import_data( $self, $book ) {
     for my $table_name ($book->sheets) {
         my $sheet = $book->sheet( $table_name );
         my $tablevar = sprintf 'table_%03d', $i++;
-        my $data = [$sheet->rows()];
+        #warn sprintf "%s: %d, %d", $table_name, $sheet->maxcol, $sheet->maxrow;
+        #use Data::Dumper;
+        #warn Dumper [$sheet->cellrow(2)];
+        #warn Dumper [$sheet->row(2)];
+        my $data = [map { [$sheet->cellrow($_)] } 1..$sheet->maxrow ];
+        #my $data = [$sheet->rows($_)];
         my $colnames = shift @{$data};
 
         (my $sql_name = $table_name) =~ s!\s!_!g;
