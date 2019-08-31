@@ -52,7 +52,9 @@ has 'tables' => (
 
 has 'spreadsheet_options' => (
     is => 'lazy',
-    default => sub { {} },
+    default => sub { {
+        dtfmt => 'yyyy-mm-dd',
+    } },
 );
 
 sub _read_file( $self ) {
