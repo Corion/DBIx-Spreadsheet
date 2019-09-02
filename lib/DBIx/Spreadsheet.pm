@@ -73,6 +73,30 @@ sub gen_colnames( $self, @colnames ) {
            @colnames;
 }
 
+# The nasty fixup until I clean up Spreadsheet::ReadSXC to allow for the raw
+# values
+sub nasty_cell_fixup( $self, $value ) {
+    return $value if ! defined $value;
+# use Data::Dumper; $Data::Dumper::Useqq = 1;
+# warn Dumper $value;
+    # Fix up German locale formatted numbers, as that's what I have
+   if( $value =~ /^([+-]?)([0-9\.]+(,\d+))?(\s*\x{20ac}|€)?$/ ) {
+        # Fix up formatted number
+        $value =~ s![^\d\.\,+-]!!g;
+        $value =~ s!\.!!g;
+        $value =~ s!,!.!g;
+
+    # Fix up  German locale formatted dates, as that's what I have
+    } elsif( $value =~ /^([0123]?\d)\.([01]\d)\.(\d\d)$/ ) {
+        $value = "20$3-$2-$1";
+
+    # Fix up  German locale formatted dates, as that's what I have
+    } elsif( $value =~ /^([0123]?\d)\.([01]\d)\.(20\d\d)$/ ) {
+        $value = "$3-$2-$1";
+    }
+    return $value
+}
+
 sub import_data( $self, $book ) {
     my $dbh = DBI->connect('dbi:SQLite:dbname=:memory:',undef,undef,{AutoCommit => 1, RaiseError => 1,PrintError => 0});
     $dbh->sqlite_create_module(perl => "DBD::SQLite::VirtualTable::PerlData");
@@ -86,7 +110,9 @@ sub import_data( $self, $book ) {
         #use Data::Dumper;
         #warn Dumper [$sheet->cellrow(2)];
         #warn Dumper [$sheet->row(2)];
-        my $data = [map { [$sheet->cellrow($_)] } 1..$sheet->maxrow ];
+        my $data = [map { [
+                            map { $self->nasty_cell_fixup( $_ ) } $sheet->cellrow($_)
+                    ] } 1..$sheet->maxrow ];
         #my $data = [$sheet->rows($_)];
         my $colnames = shift @{$data};
 
