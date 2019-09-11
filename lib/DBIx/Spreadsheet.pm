@@ -4,7 +4,7 @@ use strict;
 use DBI;
 use Getopt::Long;
 use Spreadsheet::Read;
-use Text::Unidecode;
+use Text::CleanFragment;
 
 use Moo 2;
 
@@ -67,7 +67,7 @@ sub gen_colnames( $self, @colnames ) {
     my %seen;
     my $i = 1;
     return map { qq{"$_"}}
-           map { s!\s+!_!g; s!\W!!g; $_ }
+           map { clean_fragment( $_ ) }
            map { $i++; my $name = $_ eq '' ? sprintf "col_%d", $i : $seen{ $_ } ? "${_}_1" : $_; $seen{$name}++; $name }
            map { !defined($_) ? "" : $_ }
            @colnames;
@@ -116,10 +116,9 @@ sub import_data( $self, $book ) {
         #my $data = [$sheet->rows($_)];
         my $colnames = shift @{$data};
 
-        (my $sql_name = $table_name) =~ s!\s!_!g;
+        my $sql_name = clean_fragment $table_name;
 
         # Fix up duplicate columns, empty column names
-
         $colnames = join ",", $self->gen_colnames( @$colnames );
         {;
             #no strict 'refs';

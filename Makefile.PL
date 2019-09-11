@@ -53,6 +53,7 @@ my %module = (
         'Spreadsheet::Read'  => '0.69', # fixes for OO support
         'DBIx::RunSQL'       => '0',
         'Text::Unidecode'    => '0',
+        'Text::CleanFragment'=> '0',
     },
     TEST_REQUIRES => {
         'Test::More'   => 0,

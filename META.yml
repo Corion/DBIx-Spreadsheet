@@ -1,5 +1,5 @@
 ---
-abstract: unknown
+abstract: 'Query a spreadsheet with SQL'
 author:
   - 'Max Maischein <corion@cpan.org>'
 build_requires:
@@ -23,12 +23,13 @@ requires:
   Filter::signatures: '0.09'
   Getopt::Long: '0'
   Moo: '2'
-  Spreadsheet::Read: '0'
+  Spreadsheet::Read: '0.69'
+  Text::CleanFragment: '0'
   Text::Unidecode: '0'
   perl: '5.006'
 resources:
   license: https://dev.perl.org/licenses/
   repository: git://github.com/Corion/DBIx-Spreadsheet.git
-version: '0'
+version: '0.01'
 x_serialization_backend: 'CPAN::Meta::YAML version 0.018'
 x_static_install: 1
