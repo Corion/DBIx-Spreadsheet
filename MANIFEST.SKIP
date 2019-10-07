@@ -1,10 +1,11 @@
 ^\.git\/
 maint
 ^tags$
-.last_cover_stats
-.travis.yml
-.appveyor.yml
+^\.last_cover_stats
+^\.travis.yml
+^\.appveyor.yml
 ^\.github
+^\.prove
 Makefile$
 ^blib
 ^pm_to_blib
@@ -24,3 +25,4 @@ Makefile$
 ^DBIx-Spreadsheet
 ^frame-\d+.png
 ^demo/
+^test-local/
