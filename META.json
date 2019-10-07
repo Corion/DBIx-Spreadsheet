@@ -33,6 +33,7 @@
       "runtime" : {
          "requires" : {
             "DBIx::RunSQL" : "0",
+            "Filesys::Notify::Simple" : "0",
             "Filter::signatures" : "0.09",
             "Getopt::Long" : "0",
             "Moo" : "2",

@@ -54,6 +54,7 @@ my %module = (
         'DBIx::RunSQL'       => '0',
         'Text::Unidecode'    => '0',
         'Text::CleanFragment'=> '0',
+        'Filesys::Notify::Simple' => '0',
     },
     TEST_REQUIRES => {
         'Test::More'   => 0,
