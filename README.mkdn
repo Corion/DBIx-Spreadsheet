@@ -51,6 +51,14 @@ Returns the database handle to access the sheets.
 Arrayref containing the names of the tables. These are usually the names
 of the sheets.
 
+# TO DO
+
+- Create DBD so direct usage with [DBI](https://metacpan.org/pod/DBI) becomes possible
+
+        my $dbh = DBI->connect('dbi:Spreadsheet:filename=workbook.xlsx,start_row=2');
+
+    DBIx::Spreadsheet will provide the underlying glue.
+
 # SEE ALSO
 
 [DBD::CSV](https://metacpan.org/pod/DBD::CSV)

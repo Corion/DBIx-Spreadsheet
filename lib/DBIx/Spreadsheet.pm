@@ -197,6 +197,20 @@ sub _import_data( $self ) {
 
 1;
 
+=head1 TO DO
+
+=over 4
+
+=item *
+
+Create DBD so direct usage with L<DBI> becomes possible
+
+  my $dbh = DBI->connect('dbi:Spreadsheet:filename=workbook.xlsx,start_row=2');
+
+DBIx::Spreadsheet will provide the underlying glue.
+
+=back
+
 =head1 SEE ALSO
 
 L<DBD::CSV>
