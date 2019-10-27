@@ -51,6 +51,16 @@ Returns the database handle to access the sheets.
 Arrayref containing the names of the tables. These are usually the names
 of the sheets.
 
+# SUPPORTED FILE TYPES
+
+This module supports the same file types as [Spreadsheet::Read](https://metacpan.org/pod/Spreadsheet::Read). The following
+modules need to be installed to read the various file types:
+
+- [Text::CSV\_XS](https://metacpan.org/pod/Text::CSV_XS) - CSV files
+- [Spreadsheet::ParseXLS](https://metacpan.org/pod/Spreadsheet::ParseXLS) - Excel XLS files
+- [Spreadsheet::ParseXLSX](https://metacpan.org/pod/Spreadsheet::ParseXLSX) - Excel XLSX files
+- [Spreadsheet::ParseSXC](https://metacpan.org/pod/Spreadsheet::ParseSXC) - Staroffice / Libre Office SXC or ODS files
+
 # TO DO
 
 - Create DBD so direct usage with [DBI](https://metacpan.org/pod/DBI) becomes possible

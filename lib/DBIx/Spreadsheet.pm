@@ -197,6 +197,31 @@ sub _import_data( $self ) {
 
 1;
 
+=head1 SUPPORTED FILE TYPES
+
+This module supports the same file types as L<Spreadsheet::Read>. The following
+modules need to be installed to read the various file types:
+
+=over 4
+
+=item *
+
+L<Text::CSV_XS> - CSV files
+
+=item *
+
+L<Spreadsheet::ParseXLS> - Excel XLS files
+
+=item *
+
+L<Spreadsheet::ParseXLSX> - Excel XLSX files
+
+=item *
+
+L<Spreadsheet::ParseSXC> - Staroffice / Libre Office SXC or ODS files
+
+=back
+
 =head1 TO DO
 
 =over 4
