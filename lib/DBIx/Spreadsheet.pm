@@ -29,32 +29,86 @@ DBIx::Spreadsheet - Query a spreadsheet with SQL
        where foo = 'bar'
   SQL
 
+This module reads a workbook and makes the contained spreadsheets available
+as tables. It assumes that the first row of a spreadsheet are the column
+names. Empty column names will be replaced by C<col_$number>. The column
+names will be sanitized by L<Text::CleanFragment> so they are conveniently
+usable.
+
+=head1 METHODS
+
+=head2 C<< DBIx::Spreadsheet->new >>
+
+  my $wb = DBIx::Spreadsheet->new(
+      file => 'workboook.ods',
+  );
+
+=head3 Options
+
+=over 4
+
+=item *
+
+B<file> - name of the workbook file. The file will be read using L<Spreadsheet::Read>
+using the options in C<spreadsheet_options>.
+
 =cut
 
 has 'file' => (
     is => 'ro',
 );
 
+=item *
+
+B<spreadsheet> - a premade L<Spreadsheet::Read> object
+
+=cut
+
 has 'spreadsheet' => (
     is => 'lazy',
     default => \&_read_file,
 );
 
-has 'dbh' => (
-    is => 'lazy',
-    default => sub( $self ) { $self->_import_data; $self->{dbh} },
-);
+=item *
 
-has 'tables' => (
-    is => 'lazy',
-    default => sub( $self ) { $self->_import_data; $self->{tables} },
-);
+B<spreadsheet_options> - options for the L<Spreadsheet::Read> object
+
+=back
+
+=cut
 
 has 'spreadsheet_options' => (
     is => 'lazy',
     default => sub { {
         dtfmt => 'yyyy-mm-dd',
     } },
+);
+
+=head2 C<< ->dbh >>
+
+  my $dbh = $wb->dbh;
+
+Returns the database handle to access the sheets.
+
+=cut
+
+has 'dbh' => (
+    is => 'lazy',
+    default => sub( $self ) { $self->_import_data; $self->{dbh} },
+);
+
+=head2 C<< ->tables >>
+
+  my $tables = $wb->tables;
+
+Arrayref containing the names of the tables. These are usually the names
+of the sheets.
+
+=cut
+
+has 'tables' => (
+    is => 'lazy',
+    default => sub( $self ) { $self->_import_data; $self->{tables} },
 );
 
 sub _read_file( $self ) {
@@ -78,7 +132,7 @@ sub gen_colnames( $self, @colnames ) {
 sub nasty_cell_fixup( $self, $value ) {
     return $value if ! defined $value;
 # use Data::Dumper; $Data::Dumper::Useqq = 1;
-# warn Dumper $value;
+
     # Fix up German locale formatted numbers, as that's what I have
    if( $value =~ /^([+-]?)([0-9\.]+(,\d+))?(\s*\x{20ac}|€)?$/ ) {
         # Fix up formatted number
@@ -150,7 +204,7 @@ L<DBD::CSV>
 =head1 REPOSITORY
 
 The public repository of this module is
-L<http://github.com/Corion/DBIx-Spreadsheet>.
+L<https://github.com/Corion/DBIx-Spreadsheet>.
 
 =head1 SUPPORT
 

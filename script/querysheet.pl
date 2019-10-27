@@ -12,7 +12,7 @@ GetOptions();
 my $file = $ARGV[0];
 my $query = $ARGV[1];
 
-warn "Reading '$file'";
+#warn "Reading '$file'";
 my $sheet = DBIx::Spreadsheet->new( file => $file );
 my $dbh = $sheet->dbh;
 
