@@ -17,6 +17,40 @@ DBIx::Spreadsheet - Query a spreadsheet with SQL
          where foo = 'bar'
     SQL
 
+This module reads a workbook and makes the contained spreadsheets available
+as tables. It assumes that the first row of a spreadsheet are the column
+names. Empty column names will be replaced by `col_$number`. The column
+names will be sanitized by [Text::CleanFragment](https://metacpan.org/pod/Text::CleanFragment) so they are conveniently
+usable.
+
+# METHODS
+
+## `DBIx::Spreadsheet->new`
+
+    my $wb = DBIx::Spreadsheet->new(
+        file => 'workboook.ods',
+    );
+
+### Options
+
+- **file** - name of the workbook file. The file will be read using [Spreadsheet::Read](https://metacpan.org/pod/Spreadsheet::Read)
+using the options in `spreadsheet_options`.
+- **spreadsheet** - a premade [Spreadsheet::Read](https://metacpan.org/pod/Spreadsheet::Read) object
+- **spreadsheet\_options** - options for the [Spreadsheet::Read](https://metacpan.org/pod/Spreadsheet::Read) object
+
+## `->dbh`
+
+    my $dbh = $wb->dbh;
+
+Returns the database handle to access the sheets.
+
+## `->tables`
+
+    my $tables = $wb->tables;
+
+Arrayref containing the names of the tables. These are usually the names
+of the sheets.
+
 # SEE ALSO
 
 [DBD::CSV](https://metacpan.org/pod/DBD::CSV)
@@ -24,7 +58,7 @@ DBIx::Spreadsheet - Query a spreadsheet with SQL
 # REPOSITORY
 
 The public repository of this module is
-[http://github.com/Corion/DBIx-Spreadsheet](http://github.com/Corion/DBIx-Spreadsheet).
+[https://github.com/Corion/DBIx-Spreadsheet](https://github.com/Corion/DBIx-Spreadsheet).
 
 # SUPPORT
 
