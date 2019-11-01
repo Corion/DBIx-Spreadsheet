@@ -32,7 +32,7 @@ before_install:
   - build-dist
   - cd $BUILD_DIR
   - cpan-install --notest ExtUtils::MakeMaker~6.68
-  - cpan-install --notest Spreadsheet::ParseXLSX Spreadsheet::ParseSXC
+  - cpan-install --notest Spreadsheet::ParseXLSX Spreadsheet::ReadSXC
   - cpan-install --deps
 
 script:
