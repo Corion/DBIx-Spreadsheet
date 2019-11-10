@@ -32,6 +32,7 @@
       },
       "runtime" : {
          "requires" : {
+            "DBD::SQLite" : "0",
             "DBIx::RunSQL" : "0",
             "Filesys::Notify::Simple" : "0",
             "Filter::signatures" : "0.09",

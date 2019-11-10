@@ -51,6 +51,7 @@ my %module = (
         'Moo'                => '2',
         'Filter::signatures' => '0.09',
         'Spreadsheet::Read'  => '0.69', # fixes for OO support
+        'DBD::SQLite'        => '0',
         'DBIx::RunSQL'       => '0',
         'Text::Unidecode'    => '0',
         'Text::CleanFragment'=> '0',
