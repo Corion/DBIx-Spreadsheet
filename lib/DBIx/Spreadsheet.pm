@@ -126,6 +126,8 @@ sub gen_colname( $self, $org_name, $colposition=1, $seen={} ) {
     $org_name = !defined($org_name) ? "" : $org_name;
 
     my $name = $org_name;
+    my $chars = quotemeta join "", sort keys %charmap;
+    $name =~ s/([$chars])/_$charmap{ $1 }_/g; # replace + and % with names
     if( $org_name =~ /^\s*$/ or $name =~ /^\s*$/ ) {
         $name = sprintf "col_%d", $colposition;
     };
@@ -137,7 +139,6 @@ sub gen_colname( $self, $org_name, $colposition=1, $seen={} ) {
     # columns, and that named column collides with the generated name of an
     # unnamed column. So don't do that.
     my $counter = 1;
-    $name =~ s/([%+])/_$charmap{ $1 }_/g; # replace + and % with names
     $name =~ s/([-.])/_/g;                # replace . and - to _
     $name = clean_fragment( $name );
     if( $seen->{ $name }) {
