@@ -198,21 +198,50 @@ sub nasty_cell_fixup( $self, $value ) {
     return $value
 }
 
+our $month = qr!(?:0[1-9]|1[012]|[0-9])|[A-Z][a-z]{2}!x;
+our $day   = qr!(?:0[1-9]|1[0-9]|2[0-9]|3[01])!x;
+our $year  = qr!(?:[1-9]\d|[1-9]\d\d\d)!x;
+our $looks_like_date =
+    qr!^\s*(
+           |(?:$month \s* /  \s* $day   \s* /  \s* $year)
+           |(?:$month \s* -  \s* $day   \s* -  \s* $year)
+           |(?:$day   \s* \. \s* $month \s* \. \s* $year)
+           |(?:$year  \s* -? \s* $month \s* -? \s* $day )
+        )\s*$!x;
+
 sub import_data( $self, $book ) {
     my $dbh = DBI->connect('dbi:SQLite:dbname=:memory:',undef,undef,{AutoCommit => 1, RaiseError => 1,PrintError => 0});
     $dbh->sqlite_create_module(perl => "DBD::SQLite::VirtualTable::PerlData");
 
     my @tables;
     my $i = 0;
+    my %seen;
     for my $table_name ($book->sheets) {
         my $sheet = $book->sheet( $table_name );
         #warn sprintf "%s: %d, %d", $table_name, $sheet->maxcol, $sheet->maxrow;
         #use Data::Dumper;
         #warn Dumper [$sheet->cellrow(2)];
         #warn Dumper [$sheet->row(2)];
-        my $data = [map { [
-                            map { $self->nasty_cell_fixup( $_ ) } $sheet->cellrow($_)
-                    ] } 1..$sheet->maxrow ];
+        #use Data::Dumper; warn Dumper $sheet;
+        my $data = [map {
+                      my $rownum = $_;
+                      my @row = map {
+                          # unformatted
+                          my $v = $sheet->cell($_,$rownum);
+                          # formatted
+                          my $label = Spreadsheet::Read::cr2cell($_,$rownum);
+                          my $fv = $sheet->cell($label);
+
+                          if( defined $v ) {
+                            if( $v =~ /^\d+$/ and $fv =~ m!$looks_like_date! ) {
+                                $v = $fv
+                            };
+                          };
+
+                          $v
+                        } 1..$sheet->maxcol;
+                      [map { $self->nasty_cell_fixup( $_ ) } @row]
+                    } 1..$sheet->maxrow ];
         #my $data = [$sheet->rows($_)];
         my $colnames = shift @{$data};
 
