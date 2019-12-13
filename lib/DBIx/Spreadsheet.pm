@@ -234,6 +234,14 @@ Returns the mapping of sheet names and generated/cleaned-up table names.
 This may be convenient if you want to help your users find the table names that
 they can use.
 
+If you want to list all available table names, consider using the L<DBI>
+catalog methods instead:
+
+  my $table_names = $dbh->table_info(undef,"TABLE,VIEW",undef,undef)
+                        ->fetchall_arrayref(Slice => {});
+  print $_->{TABLE_NAME}, "\n"
+      for @$table_names;
+
 =cut
 
 sub table_names( $self ) {
