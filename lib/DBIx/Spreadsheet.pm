@@ -117,11 +117,18 @@ sub _read_file( $self ) {
 
 our $table_000;
 
+our %charmap = (
+    '+' => 'plus',
+    '%' => 'perc',
+);
+
 sub gen_colnames( $self, @colnames ) {
     my %seen;
     my $i = 1;
     return map { qq{"$_"}}
            map { clean_fragment( $_ ) }
+           map { s/([-.])/_/g; $_ }                # replace . and - to _
+           map { s/([%+])/_$charmap{ $1 }_/g; $_ } # replace + and % with names
            map { $i++; my $name = $_ eq '' ? sprintf "col_%d", $i : $seen{ $_ } ? "${_}_1" : $_; $seen{$name}++; $name }
            map { !defined($_) ? "" : $_ }
            @colnames;
