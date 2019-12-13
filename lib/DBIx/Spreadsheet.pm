@@ -126,7 +126,7 @@ sub gen_colname( $self, $org_name, $colposition=1, $seen={} ) {
     $org_name = !defined($org_name) ? "" : $org_name;
 
     my $name = $org_name;
-    if( $org_name eq '' ) {
+    if( $org_name =~ /^\s*$/ or $name =~ /^\s*$/ ) {
         $name = sprintf "col_%d", $colposition;
     };
 
