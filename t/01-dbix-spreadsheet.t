@@ -20,7 +20,12 @@ for my $type (qw(ods xlsx)) {
     my $db = DBIx::Spreadsheet->new( file => "t/Accounting-test.$type" );
     my $dbh = $db->dbh;
     ok $dbh, "We fetch a dbh";
-    is_deeply $db->tables, [qw[Invoices Expenses VAT_Declaration Account]], "We have the worksheets as tables";
+    is_deeply $db->tables, [
+        { sheet => 'Invoices', table => 'Invoices' },
+        { sheet => 'Expenses', table => 'Expenses' },
+        { sheet => 'VAT Declaration', table => 'VAT_Declaration' },
+        { sheet => 'Account', table => 'Account' },
+    ], "We have the worksheets as tables";
 
     my $expenses = $dbh->selectall_arrayref(<<'SQL', { Slice => {} });
         select

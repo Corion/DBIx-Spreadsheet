@@ -194,7 +194,6 @@ sub import_data( $self, $book ) {
     my $i = 0;
     for my $table_name ($book->sheets) {
         my $sheet = $book->sheet( $table_name );
-        my $tablevar = sprintf 'table_%03d', $i++;
         #warn sprintf "%s: %d, %d", $table_name, $sheet->maxcol, $sheet->maxrow;
         #use Data::Dumper;
         #warn Dumper [$sheet->cellrow(2)];
@@ -215,13 +214,30 @@ sub import_data( $self, $book ) {
             #${main::}{$tablevar} = \$data;
         };
         local $table_000 = $data;
-        $tablevar = __PACKAGE__ . '::table_000';
+        my $tablevar = __PACKAGE__ . '::table_000';
         my $sql = qq(CREATE VIRTUAL TABLE temp."$sql_name" USING perl($colnames, arrayrefs="$tablevar"););
         $dbh->do($sql);
-        push @tables, $sql_name;
+        push @tables, { sheet => $table_name, table => $sql_name };
     };
 
     return $dbh, \@tables;
+}
+
+=head2 C<< ->table_names >>
+
+  print "The sheets are available as\n";
+  for my $mapping ($foo->table_names) {
+      printf "Sheet: %s Table name: %s\n", $mapping->{sheet}, $mapping->{table};
+  };
+
+Returns the mapping of sheet names and generated/cleaned-up table names.
+This may be convenient if you want to help your users find the table names that
+they can use.
+
+=cut
+
+sub table_names( $self ) {
+    @{ $self->tables }
 }
 
 sub _import_data( $self ) {
