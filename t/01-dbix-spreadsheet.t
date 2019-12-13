@@ -36,37 +36,37 @@ SQL
           'Type' => 'venue',
           'Receipt_number' => '1',
           'Status' => 'paid',
-          'Amount' => '4000.00',
-          'VAT_19_perc' => '0.00',
+          'Amount' => '4000',
+          'VAT_19_perc' => '0',
           'Company' => undef,
           'Booking_Category' => 'GPW2017',
           'Transaction_ID' => undef,
-          'Vat_7_perc' => '0.00',
+          'Vat_7_perc' => '0',
           'Date' => '2017-03-01'
         },
         {
           'Booking_Category' => 'GPW2017',
           'Transaction_ID' => undef,
-          'Vat_7_perc' => '0.00',
+          'Vat_7_perc' => '0',
           'Date' => '2017-03-02',
           'Type' => 'social event',
           'Receipt_number' => '2',
           'Status' => 'paid',
-          'Amount' => '1200.00',
-          'VAT_19_perc' => '1428.00',
+          'Amount' => '1200',
+          'VAT_19_perc' => '1428',
           'Company' => undef
         },
         {
           'Type' => 'T-shirts',
           'Receipt_number' => '3',
           'Status' => 'paid',
-          'VAT_19_perc' => '595.00',
-          'Amount' => '500.00',
+          'VAT_19_perc' => '595',
+          'Amount' => '500',
           'Company' => undef,
           'Booking_Category' => 'GPW2017',
           'Transaction_ID' => undef,
           'Date' => '2017-03-03',
-          'Vat_7_perc' => '0.00'
+          'Vat_7_perc' => '0'
         }
     ], "We can fetch Expenses ($type)"
         or diag Dumper $expenses;
