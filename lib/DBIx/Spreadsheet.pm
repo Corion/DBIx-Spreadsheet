@@ -122,16 +122,44 @@ our %charmap = (
     '%' => 'perc',
 );
 
+sub gen_colname( $self, $org_name, $colposition=1, $seen={} ) {
+    $org_name = !defined($org_name) ? "" : $org_name;
+
+    my $name = $org_name;
+    if( $org_name eq '' ) {
+        $name = sprintf "col_%d", $colposition;
+    };
+
+    # Welcome quadratical complexity. If you look at this line for performance
+    # reasons, this, together with the call from ->gen_colnames implies that
+    # we have quadratical runtime on the number of colliding column names. This
+    # will happen especially if there is a named column inserted before unnamed
+    # columns, and that named column collides with the generated name of an
+    # unnamed column. So don't do that.
+    my $counter = 1;
+    $name =~ s/([%+])/_$charmap{ $1 }_/g; # replace + and % with names
+    $name =~ s/([-.])/_/g;                # replace . and - to _
+    $name = clean_fragment( $name );
+    if( $seen->{ $name }) {
+        my $newname = $name .= "_" . ($counter++);
+        while( $seen->{ $newname }) {
+            $newname = $name .= "_" . ($counter++);
+        };
+        $name = $newname;
+    };
+    return $name
+}
+
 sub gen_colnames( $self, @colnames ) {
     my %seen;
     my $i = 1;
-    return map { qq{"$_"}}
-           map { clean_fragment( $_ ) }
-           map { s/([-.])/_/g; $_ }                # replace . and - to _
-           map { s/([%+])/_$charmap{ $1 }_/g; $_ } # replace + and % with names
-           map { $i++; my $name = $_ eq '' ? sprintf "col_%d", $i : $seen{ $_ } ? "${_}_1" : $_; $seen{$name}++; $name }
-           map { !defined($_) ? "" : $_ }
-           @colnames;
+    my @res;
+    for my $name (@colnames) {
+        $name = $self->gen_colname( $name, $i++, \%seen );
+        $seen{ $name }++;
+        push @res, qq("$name");
+    };
+    return @res
 }
 
 # The nasty fixup until I clean up Spreadsheet::ReadSXC to allow for the raw

@@ -13,6 +13,7 @@ script/querysheet.pl
 script/watchsheet.pl
 t/00-load.t
 t/01-dbix-spreadsheet.t
+t/02-generate-colnames.t
 t/Accounting-test.ods
 t/Accounting-test.xlsx
 xt/99-changes.t
