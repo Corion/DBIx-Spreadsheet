@@ -31,9 +31,9 @@ DBIx::Spreadsheet - Query a spreadsheet with SQL
 
 This module reads a workbook and makes the contained spreadsheets available
 as tables. It assumes that the first row of a spreadsheet are the column
-names. Empty column names will be replaced by C<col_$number>. The column
-names will be sanitized by L<Text::CleanFragment> so they are conveniently
-usable.
+names. Empty column names will be replaced by C<col_$number>. The sheet and
+column names will be sanitized by L<Text::CleanFragment> so they are
+conveniently usable.
 
 =head1 METHODS
 
@@ -153,6 +153,10 @@ sub gen_colname( $self, $org_name, $colposition=1, $seen={} ) {
     return $name
 }
 
+sub gen_tablename( $self, $org_name, $seen={}) {
+    $self->gen_colname( $org_name, 0, $seen );
+}
+
 sub gen_colnames( $self, @colnames ) {
     my %seen;
     my $i = 1;
@@ -207,7 +211,7 @@ sub import_data( $self, $book ) {
         #my $data = [$sheet->rows($_)];
         my $colnames = shift @{$data};
 
-        my $sql_name = clean_fragment $table_name;
+        my $sql_name = $self->gen_tablename( $table_name, \%seen );
 
         # Fix up duplicate columns, empty column names
         $colnames = join ",", $self->gen_colnames( @$colnames );

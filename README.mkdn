@@ -19,9 +19,9 @@ DBIx::Spreadsheet - Query a spreadsheet with SQL
 
 This module reads a workbook and makes the contained spreadsheets available
 as tables. It assumes that the first row of a spreadsheet are the column
-names. Empty column names will be replaced by `col_$number`. The column
-names will be sanitized by [Text::CleanFragment](https://metacpan.org/pod/Text::CleanFragment) so they are conveniently
-usable.
+names. Empty column names will be replaced by `col_$number`. The sheet and
+column names will be sanitized by [Text::CleanFragment](https://metacpan.org/pod/Text::CleanFragment) so they are
+conveniently usable.
 
 # METHODS
 
@@ -50,6 +50,25 @@ Returns the database handle to access the sheets.
 
 Arrayref containing the names of the tables. These are usually the names
 of the sheets.
+
+## `->table_names`
+
+    print "The sheets are available as\n";
+    for my $mapping ($foo->table_names) {
+        printf "Sheet: %s Table name: %s\n", $mapping->{sheet}, $mapping->{table};
+    };
+
+Returns the mapping of sheet names and generated/cleaned-up table names.
+This may be convenient if you want to help your users find the table names that
+they can use.
+
+If you want to list all available table names, consider using the [DBI](https://metacpan.org/pod/DBI)
+catalog methods instead:
+
+    my $table_names = $dbh->table_info(undef,"TABLE,VIEW",undef,undef)
+                          ->fetchall_arrayref(Slice => {});
+    print $_->{TABLE_NAME}, "\n"
+        for @$table_names;
 
 # SUPPORTED FILE TYPES
 
