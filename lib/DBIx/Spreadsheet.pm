@@ -111,8 +111,8 @@ has 'tables' => (
     default => sub( $self ) { $self->_import_data; $self->{tables} },
 );
 
-sub _read_file( $self ) {
-    Spreadsheet::Read->new( $self->file, %{ $self->spreadsheet_options } );
+sub _read_file( $self, $filename=$self->file ) {
+    Spreadsheet::Read->new( $filename, %{ $self->spreadsheet_options } );
 };
 
 our $table_000;
