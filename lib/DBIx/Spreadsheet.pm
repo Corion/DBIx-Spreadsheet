@@ -112,7 +112,12 @@ has 'tables' => (
 );
 
 sub _read_file( $self, $filename=$self->file ) {
-    Spreadsheet::Read->new( $filename, %{ $self->spreadsheet_options } );
+    return
+        Spreadsheet::Read->new(
+            $filename,
+            attr => 1,
+            %{ $self->spreadsheet_options }
+        );
 };
 
 our $table_000;
