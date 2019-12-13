@@ -12,7 +12,9 @@ GetOptions();
 
 my ($file,@queries) = @ARGV;
 
-my %watch_directory = map { ( -d $_ ? $_ : dirname($_)) => 1 } @ARGV;
+my %watch_directory = map { ( -d $_ ? $_ : dirname($_)) => 1 }
+                      grep { -e $_ }
+                      @ARGV;
 
 my $watcher = Filesys::Notify::Simple->new([
     sort keys %watch_directory,
@@ -30,7 +32,7 @@ sub update_queries {
         #eval {
             DBIx::RunSQL->run(
                 dbh => $dbh,
-                sql => $q,
+                sql => \$q,
             );
         #};
     };
