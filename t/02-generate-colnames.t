@@ -14,6 +14,7 @@ my @testcases = (
     [["col_2",'col_2',""],['col_2',"col_2_1","col_3"]],
     [["foo.bar",'foo\\bar','foo"bar'],['foo_bar','foo_bar_1','foobar'],"Names get sanitized"],
     [["foo+bar",'foo%'],['foo_plus_bar','foo_perc'],"Some chars get named"],
+    [[',',';',"\t"," ",'_',"\r\n"],['col_1','col_2','col_3','col_4','col_5','col_6'],"Whitespace and delimiters"],
 );
 
 my $testcount = 0+2*@testcases;
