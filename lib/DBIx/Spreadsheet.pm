@@ -220,11 +220,8 @@ sub import_data( $self, $book ) {
     my %seen;
     for my $table_name ($book->sheets) {
         my $sheet = $book->sheet( $table_name );
-        #warn sprintf "%s: %d, %d", $table_name, $sheet->maxcol, $sheet->maxrow;
-        #use Data::Dumper;
-        #warn Dumper [$sheet->cellrow(2)];
-        #warn Dumper [$sheet->row(2)];
-        #use Data::Dumper; warn Dumper $sheet;
+
+        # We could try to identify the column types here more closely
 
         my $data = [map {
                       my $rownum = $_;
