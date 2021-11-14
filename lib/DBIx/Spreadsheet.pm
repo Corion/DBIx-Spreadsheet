@@ -233,15 +233,15 @@ sub import_data( $self, $book ) {
                           } else {
                               # unformatted
                               $v = $sheet->cell($_,$rownum);
-                              # formatted
-                              my $label = Spreadsheet::Read::cr2cell($_,$rownum);
-                              my $fv = $sheet->cell($label);
-
-                              if( defined $v ) {
-                                  if( $v =~ /^\d+$/ and $fv =~ m!$looks_like_date! ) {
-                                      $v = $fv
-                                  };
-                              };
+                              # use formatted if things look like a date
+                              #my $label = Spreadsheet::Read::cr2cell($_,$rownum);
+                              #my $fv = $sheet->cell($label);
+                              #
+                              #if( defined $v ) {
+                              #    if( $v =~ /^\d+$/ and $fv =~ m!$looks_like_date! ) {
+                              #        $v = $fv
+                              #    };
+                              #};
                           }
                           $v
                         } 1..$sheet->maxcol;
