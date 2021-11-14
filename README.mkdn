@@ -20,7 +20,7 @@ DBIx::Spreadsheet - Query a spreadsheet with SQL
 This module reads a workbook and makes the contained spreadsheets available
 as tables. It assumes that the first row of a spreadsheet are the column
 names. Empty column names will be replaced by `col_$number`. The sheet and
-column names will be sanitized by [Text::CleanFragment](https://metacpan.org/pod/Text::CleanFragment) so they are
+column names will be sanitized by [Text::CleanFragment](https://metacpan.org/pod/Text%3A%3ACleanFragment) so they are
 conveniently usable.
 
 # METHODS
@@ -33,10 +33,10 @@ conveniently usable.
 
 ### Options
 
-- **file** - name of the workbook file. The file will be read using [Spreadsheet::Read](https://metacpan.org/pod/Spreadsheet::Read)
+- **file** - name of the workbook file. The file will be read using [Spreadsheet::Read](https://metacpan.org/pod/Spreadsheet%3A%3ARead)
 using the options in `spreadsheet_options`.
-- **spreadsheet** - a premade [Spreadsheet::Read](https://metacpan.org/pod/Spreadsheet::Read) object
-- **spreadsheet\_options** - options for the [Spreadsheet::Read](https://metacpan.org/pod/Spreadsheet::Read) object
+- **spreadsheet** - a premade [Spreadsheet::Read](https://metacpan.org/pod/Spreadsheet%3A%3ARead) object
+- **spreadsheet\_options** - options for the [Spreadsheet::Read](https://metacpan.org/pod/Spreadsheet%3A%3ARead) object
 
 ## `->dbh`
 
@@ -72,13 +72,13 @@ catalog methods instead:
 
 # SUPPORTED FILE TYPES
 
-This module supports the same file types as [Spreadsheet::Read](https://metacpan.org/pod/Spreadsheet::Read). The following
+This module supports the same file types as [Spreadsheet::Read](https://metacpan.org/pod/Spreadsheet%3A%3ARead). The following
 modules need to be installed to read the various file types:
 
-- [Text::CSV\_XS](https://metacpan.org/pod/Text::CSV_XS) - CSV files
-- [Spreadsheet::ParseXLS](https://metacpan.org/pod/Spreadsheet::ParseXLS) - Excel XLS files
-- [Spreadsheet::ParseXLSX](https://metacpan.org/pod/Spreadsheet::ParseXLSX) - Excel XLSX files
-- [Spreadsheet::ParseSXC](https://metacpan.org/pod/Spreadsheet::ParseSXC) - Staroffice / Libre Office SXC or ODS files
+- [Text::CSV\_XS](https://metacpan.org/pod/Text%3A%3ACSV_XS) - CSV files
+- [Spreadsheet::ParseXLS](https://metacpan.org/pod/Spreadsheet%3A%3AParseXLS) - Excel XLS files
+- [Spreadsheet::ParseXLSX](https://metacpan.org/pod/Spreadsheet%3A%3AParseXLSX) - Excel XLSX files
+- [Spreadsheet::ParseSXC](https://metacpan.org/pod/Spreadsheet%3A%3AParseSXC) - Staroffice / Libre Office SXC or ODS files
 
 # TO DO
 
@@ -90,7 +90,7 @@ modules need to be installed to read the various file types:
 
 # SEE ALSO
 
-[DBD::CSV](https://metacpan.org/pod/DBD::CSV)
+[DBD::CSV](https://metacpan.org/pod/DBD%3A%3ACSV)
 
 # REPOSITORY
 
@@ -106,7 +106,7 @@ The public support forum of this module is
 
 Please report bugs in this module via the RT CPAN bug queue at
 [https://rt.cpan.org/Public/Dist/Display.html?Name=DBIx-Spreadsheet](https://rt.cpan.org/Public/Dist/Display.html?Name=DBIx-Spreadsheet)
-or via mail to [dbix-spreadsheet-Bugs@rt.cpan.org](https://metacpan.org/pod/dbix-spreadsheet-Bugs@rt.cpan.org).
+or via mail to [dbix-spreadsheet-Bugs@rt.cpan.org](https://metacpan.org/pod/dbix-spreadsheet-Bugs%40rt.cpan.org).
 
 # AUTHOR
 
