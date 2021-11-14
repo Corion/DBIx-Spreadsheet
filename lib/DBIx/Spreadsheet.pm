@@ -198,11 +198,11 @@ sub nasty_cell_fixup( $self, $value ) {
     return $value
 }
 
-our $month_num = qr!(?<month>0[1-9]|1[012]|[1-9])!x;
+our $month_num = qr!(?<month>0?[1-9]|1[012])!x;
 our $month     = qr!($month_num|[A-Z][a-z]{2})!x;
 our $day_num2  = qr!(?<day>0[1-9]|1[0-9]|2[0-9]|3[01])!x;
 our $day       = qr!(?<day>[1-9]|$day_num2)!x;
-our $year      = qr!(?<year>:[1-9]\d|[1-9]\d\d\d)!x;
+our $year      = qr!(?<year>[1-9]\d|[1-9]\d\d\d)!x;
 our $looks_like_date =
     qr!^\s*(
            |(?:$month     \s* /  \s* $day       \s* /  \s* $year)
