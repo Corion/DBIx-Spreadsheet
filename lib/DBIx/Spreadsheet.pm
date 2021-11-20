@@ -176,25 +176,70 @@ sub gen_colnames( $self, @colnames ) {
 
 # The nasty fixup until I clean up Spreadsheet::ReadSXC to allow for the raw
 # values
-sub nasty_cell_fixup( $self, $value ) {
+sub nasty_cell_fixup( $self, $value, $source_type, $attr ) {
     return $value if ! defined $value;
 # use Data::Dumper; $Data::Dumper::Useqq = 1;
 
-    # Fix up German locale formatted numbers, as that's what I have
-   if( $value =~ /^([+-]?)([0-9\.]+(,\d+))?(\s*\x{20ac}|€)?$/ ) {
-        # Fix up formatted number
-        $value =~ s![^\d\.\,+-]!!g;
-        $value =~ s!\.!!g;
-        $value =~ s!,!.!g;
+    # We treat the different spreadsheet sources differently. This should
+    # become more feature-oriented, like:
+    # if( xlsx ) { +reformat_date_from_excel_date, +reformat_number
 
-    # Fix up  German locale formatted dates, as that's what I have
-    } elsif( $value =~ /^([0123]?\d)\.([01]\d)\.(\d\d)$/ ) {
-        $value = "20$3-$2-$1";
+    my $t = $attr->{type} // '';
+    my $f = $attr->{format} // '';
 
-    # Fix up  German locale formatted dates, as that's what I have
-    } elsif( $value =~ /^([0123]?\d)\.([01]\d)\.(20\d\d)$/ ) {
-        $value = "$3-$2-$1";
+    if( $source_type eq 'xlsx' ) {
+        if( $f =~ m!DD! ) {
+            # it's still a date, no matter what the type says
+            $t = 'date';
+        };
+
+        if( $t eq 'date' ) {
+            # Reformat the Excel-date (number of days since 1900-01-01
+            require Spreadsheet::ParseExcel::Utility;
+
+            $value = Spreadsheet::ParseExcel::Utility::ExcelFmt( 'yyyy-mm-dd', $value );
+
+        } elsif(    $t eq 'currency') {
+            # Hard-format back to random currency format, as that's
+            # what I have. This should rather be a string operation
+            $value = sprintf '%0.2f', $value;
+
+        } elsif( $t eq 'numeric' and $f =~ m!\.00!) {
+            # Hard-format back to random currency format, as that's
+            # what I have. This should rather be a string operation
+            $value = sprintf '%0.2f', $value;
+        }
+
+    } elsif( $source_type eq 'ods' ) {
+        # Fix up German locale formatted numbers, as that's what I have
+        if(     $t eq 'currency') {
+            if( $value =~ /^([+-]?)([0-9\.]+(,\d+))?(\s*\x{20ac}|€)?$/ ) {
+                # Fix up formatted number
+                $value =~ s![^\d\.\,+-]!!g;
+                $value =~ s!\.!!g;
+                $value =~ s!,!.!g;
+            };
+
+            # Hard-format back to random currency format, as that's
+            # what I have. This should rather be a string operation
+            $value = sprintf '%0.2f', $value;
+
+        # Fix up  German locale formatted dates, as that's what I have
+        } elsif(     $t eq 'date'
+                 and $value =~ /^([0123]?\d)\.([01]\d)\.(\d\d)$/ ) {
+            $value = "20$3-$2-$1";
+
+        # Fix up  German locale formatted dates, as that's what I have
+        } elsif(     $t eq 'date'
+                 and $value =~ /^([0123]?\d)\.([01]\d)\.(20\d\d)$/ ) {
+            $value = "$3-$2-$1";
+        }
+    } else {
+        # Don't know
+        die "Unknown spreadsheet type '$source_type'";
     }
+
+
     return $value
 }
 
@@ -222,6 +267,8 @@ sub import_data( $self, $book ) {
         my $sheet = $book->sheet( $table_name );
 
         # We could try to identify the column types here more closely
+        my $source_type = $book->[0]->{type}
+            or die "No spreadsheet type found in spreadsheet?!";
 
         my $data = [map {
                       my $rownum = $_;
@@ -231,8 +278,15 @@ sub import_data( $self, $book ) {
                               # This is a column heading
                               $v = $sheet->cell($_,$rownum);
                           } else {
+                              my $c = $_;
                               # unformatted
-                              $v = $sheet->cell($_,$rownum);
+                              $v = $sheet->cell($c,$rownum);
+                              my $a;
+                              if( defined $sheet->{attr}->[$c]->[$rownum]) {
+                                  $a = $sheet->attr($c,$rownum);
+                              };
+                              $v = $self->nasty_cell_fixup( $v, $source_type, $a );
+
                               # use formatted if things look like a date
                               #my $label = Spreadsheet::Read::cr2cell($_,$rownum);
                               #my $fv = $sheet->cell($label);
@@ -245,7 +299,8 @@ sub import_data( $self, $book ) {
                           }
                           $v
                         } 1..$sheet->maxcol;
-                      [map { $self->nasty_cell_fixup( $_ ) } @row]
+
+                      \@row
                     } 1..$sheet->maxrow ];
         #my $data = [$sheet->rows($_)];
         my $colnames = shift @{$data};

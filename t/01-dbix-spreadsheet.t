@@ -52,7 +52,7 @@ SQL
           'Receipt_number' => '1',
           'Status' => 'paid',
           'Amount' => '4000.00',
-          'VAT_19_perc' => '0.00',
+          'VAT_19_perc' => '4760.00',
           'Company' => undef,
           'Booking_Category' => 'GPW2017',
           'Transaction_ID' => undef,
