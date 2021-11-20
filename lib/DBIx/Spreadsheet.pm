@@ -35,6 +35,12 @@ names. Empty column names will be replaced by C<col_$number>. The sheet and
 column names will be sanitized by L<Text::CleanFragment> so they are
 conveniently usable.
 
+=head1 WARNING
+
+The parsing and reformatting of cell values is very hacky. Don't expect
+too much consistency between C<ods> and C<xlsx> cell formats. I try to
+make these consistent, but this is currently a pile of value-specific hacks.
+
 =head1 METHODS
 
 =head2 C<< DBIx::Spreadsheet->new >>

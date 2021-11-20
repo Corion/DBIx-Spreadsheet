@@ -23,6 +23,12 @@ names. Empty column names will be replaced by `col_$number`. The sheet and
 column names will be sanitized by [Text::CleanFragment](https://metacpan.org/pod/Text%3A%3ACleanFragment) so they are
 conveniently usable.
 
+# WARNING
+
+The parsing and reformatting of cell values is very hacky. Don't expect
+too much consistency between `ods` and `xlsx` cell formats. I try to
+make these consistent, but this is currently a pile of value-specific hacks.
+
 # METHODS
 
 ## `DBIx::Spreadsheet->new`
